@@ -1,0 +1,39 @@
+resource -  id , sectionId , title , author , inStock , toReturn , yearPublished
+boook - resourceId , genre , publisher , nrPages
+cd - resourceId , format , size , duration
+researchPaper - resourceId , field , university , sources
+
+section - id , libraryId , numberShelves , categoryName , <resources>
+library - id , address , name , program , <memeberships> , <sections> , <librarians>
+librarian -  id , libraryId , name , email , phone , program
+client - id , name , email , <memberships>
+
+memebership - id , clientId , libraryId  , type , dateJoined , dateExpired , <borrowings>
+borrowing - id , resourceId , membershipId , dateBorrowed , dateReturned
+
+CRUD: person , membership , borrowing , library
+
+
+
+class -> repository (database) -> audit
+               -> class service (print) ->
+generalservice
+
+
+main -> database connection -> system in -> bigService -> class service
+
+
+
+acțiuni/interogări
+crud person membership library borrowing
+borrow book -> premium select deadline for borrowing
+return book
+extend deadline
+check valability material in library
+get random material
+check in
+check out
+notify deadline borrowing , days before
+notify expiration membership , days before
+sort libraries by hours opened/ nr of materials
+premium -> ask to add resource
