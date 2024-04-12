@@ -10,6 +10,7 @@ public class Person {
         this.name = name;
         this.email = email;
     }
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -33,7 +34,6 @@ public class Person {
 
     public String toString() {
         return "Person{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';

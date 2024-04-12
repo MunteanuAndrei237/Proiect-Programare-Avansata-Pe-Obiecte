@@ -9,6 +9,20 @@ import java.util.List;
 
 public class LibraryRepository implements RepositoryInterface<Library> {
 
+    private static LibraryRepository instance;
+
+    private LibraryRepository() {
+        // Private constructor to prevent direct instantiation
+    }
+
+    // Singleton pattern
+    public static synchronized LibraryRepository getInstance() {
+        if (instance == null) {
+            instance = new LibraryRepository();
+        }
+        return instance;
+    }
+
     @Override
     public Library findById(int id, DatabaseManager dbManager) {
         String query = "SELECT * FROM Library WHERE id = " + id;
@@ -44,7 +58,7 @@ public class LibraryRepository implements RepositoryInterface<Library> {
 
     @Override
     public void create(Library entity, DatabaseManager dbManager) {
-        String query = "INSERT INTO Library (id, address, name, program) VALUES (" + entity.getId() + ", '" + entity.getAddress() + "', '" + entity.getName() + "', '" + entity.getProgram() + "')";
+        String query = "INSERT INTO Library ( address, name, program) VALUES ('" + entity.getAddress() + "', '" + entity.getName() + "', '" + entity.getProgram() + "')";
         dbManager.executeQuery(query);
     }
 
@@ -56,10 +70,10 @@ public class LibraryRepository implements RepositoryInterface<Library> {
 
     @Override
     public void delete(int id, DatabaseManager dbManager) {
-        String query = "DELETE FROM Library WHERE id = "+ id ;
-        Object[] params = {id};
+        String query = "DELETE FROM Library WHERE id = " + id;
         dbManager.executeQuery(query);
     }
+
 
     private Library extractLibraryFromResultSet(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");

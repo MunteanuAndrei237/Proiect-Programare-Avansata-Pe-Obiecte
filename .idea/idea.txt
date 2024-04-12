@@ -1,39 +1,90 @@
-resource -  id , sectionId , title , author , inStock , toReturn , yearPublished
-boook - resourceId , genre , publisher , nrPages
-cd - resourceId , format , size , duration
-researchPaper - resourceId , field , university , sources
+Clase:
 
-section - id , libraryId , numberShelves , categoryName , <resources>
-library - id , address , name , program , <memeberships> , <sections> , <librarians>
-librarian -  id , libraryId , name , email , phone , program
-client - id , name , email , <memberships>
+Resource:
 
-memebership - id , clientId , libraryId  , type , dateJoined , dateExpired , <borrowings>
-borrowing - id , resourceId , membershipId , dateBorrowed , dateReturned
+id (int)
+sectionId (int)
+title (string)
+author (string)
+inStock (int)
+toReturn (int)
+yearPublished (int)
+Book:
 
-CRUD: person , membership , borrowing , library
+resourceId (int)
+genre (string)
+publisher (string)
+nrPages (int)
+CD:
 
+resourceId (int)
+format (string)
+size (int)
+duration (int)
+ResearchPaper:
 
+resourceId (int)
+field (string)
+university (string)
+sources (string)
+Section:
 
-class -> repository (database) -> audit
-               -> class service (print) ->
-generalservice
+id (int)
+libraryId (int)
+numberShelves (int)
+categoryName (string)
+Library:
 
+id (int)
+address (string)
+name (string)
+program (string)
+Librarian:
 
-main -> database connection -> system in -> bigService -> class service
+id (int)
+libraryId (int)
+name (string)
+email (string)
+phone (string)
+program (string)
+Client:
 
+id (int)
+name (string)
+email (string)
+Membership:
 
+id (int)
+clientId (int)
+libraryId (int)
+type (string)
+dateJoined (date)
+dateExpired (date)
+Borrowing:
 
-acțiuni/interogări
-crud person membership library borrowing
-borrow book -> premium select deadline for borrowing
+id (int)
+resourceId (int)
+membershipId (int)
+dateBorrowed (date)
+dateReturned (date)
+
+CRUD:
+person
+membership
+borrowing
+library
+librarian
+
+Acțiuni/interogări:
+borrow book
 return book
 extend deadline
 check valability material in library
 get random material
 check in
 check out
-notify deadline borrowing , days before
-notify expiration membership , days before
+notify deadline borrowing ( days before )
+notify expiration membership ( days before )
 sort libraries by hours opened/ nr of materials
 premium -> ask to add resource
+CRUD -person , membership , borrowing , library , librarian

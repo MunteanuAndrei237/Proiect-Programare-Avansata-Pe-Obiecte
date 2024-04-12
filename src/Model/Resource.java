@@ -74,7 +74,6 @@ public class Resource {
 
     public String toString() {
         return "Resource{" +
-                "id=" + id +
                 ", sectionId=" + sectionId +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +

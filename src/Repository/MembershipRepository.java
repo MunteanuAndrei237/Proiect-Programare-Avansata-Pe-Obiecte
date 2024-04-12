@@ -2,6 +2,7 @@ package Repository;
 
 import Model.Membership;
 import DatabaseManager.DatabaseManager;
+
 import java.text.SimpleDateFormat;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +10,21 @@ import java.util.List;
 
 
 public class MembershipRepository implements RepositoryInterface<Membership> {
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
+    private final SimpleDateFormat sdf;
+    private static MembershipRepository instance;
+
+    private MembershipRepository() {
+        this.sdf = new SimpleDateFormat("dd-MMM-yy");
+    }
+
+    // Singleton pattern
+    public static synchronized MembershipRepository getInstance() {
+        if (instance == null) {
+            instance = new MembershipRepository();
+        }
+        return instance;
+    }
+
     @Override
     public Membership findById(int id, DatabaseManager dbManager) {
         String query = "SELECT * FROM Membership WHERE id = " + id;
@@ -45,7 +60,7 @@ public class MembershipRepository implements RepositoryInterface<Membership> {
 
     @Override
     public void create(Membership entity, DatabaseManager dbManager) {
-        String query = "INSERT INTO Membership (id, personId, libraryId, type, dateJoined, dateExpired) VALUES (" + entity.getId() + ", " + entity.getPersonId() + ", " + entity.getLibraryId() + ", '" + entity.getType() + "', '" + sdf.format(entity.getDateJoined()) + "', '" + sdf.format(entity.getDateExpired()) + "')";
+        String query = "INSERT INTO Membership ( personId, libraryId, type, dateJoined, dateExpired) VALUES ( " + entity.getPersonId() + ", " + entity.getLibraryId() + ", '" + entity.getType() + "', '" + sdf.format(entity.getDateJoined()) + "', '" + sdf.format(entity.getDateExpired()) + "')";
         dbManager.executeQuery(query);
     }
 

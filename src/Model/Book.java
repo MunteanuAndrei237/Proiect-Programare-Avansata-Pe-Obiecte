@@ -14,6 +14,7 @@ public class Book extends Resource {
         this.publisher = publisher;
         this.nrPages = nrPages;
     }
+
     // Getters and Setters
     public int getResourceId() {
         return resourceId;

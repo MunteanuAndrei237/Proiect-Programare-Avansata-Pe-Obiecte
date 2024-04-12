@@ -8,7 +8,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonRepository implements RepositoryInterface<Person>  {
+public class PersonRepository implements RepositoryInterface<Person> {
+
+    private static PersonRepository instance;
+
+    private PersonRepository() {
+        // Private constructor to prevent instantiation
+    }
+
+    // Singleton pattern
+    public static synchronized PersonRepository getInstance() {
+        if (instance == null) {
+            instance = new PersonRepository();
+        }
+        return instance;
+    }
+
     @Override
     public Person findById(int id, DatabaseManager dbManager) {
         String query = "SELECT * FROM Person WHERE id = " + id;
@@ -44,7 +59,7 @@ public class PersonRepository implements RepositoryInterface<Person>  {
 
     @Override
     public void create(Person entity, DatabaseManager dbManager) {
-        String query = "INSERT INTO Person (id, name, email) VALUES (" + entity.getId() + ", '" + entity.getName() + "', '" + entity.getEmail() + "')";
+        String query = "INSERT INTO Person ( name, email) VALUES ( '" + entity.getName() + "', '" + entity.getEmail() + "')";
         dbManager.executeQuery(query);
     }
 

@@ -1,13 +1,29 @@
 package Repository;
+
 import java.text.SimpleDateFormat;
+
 import Model.Borrowing;
 import DatabaseManager.DatabaseManager;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BorrowingRepository implements RepositoryInterface<Borrowing> {
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
+    private static BorrowingRepository instance;
+    private final SimpleDateFormat sdf;
+
+    private BorrowingRepository() {
+        this.sdf = new SimpleDateFormat("dd-MMM-yy");
+    }
+
+    // Singleton pattern
+    public static synchronized BorrowingRepository getInstance() {
+        if (instance == null) {
+            instance = new BorrowingRepository();
+        }
+        return instance;
+    }
 
     @Override
     public Borrowing findById(int id, DatabaseManager dbManager) {
@@ -44,7 +60,7 @@ public class BorrowingRepository implements RepositoryInterface<Borrowing> {
 
     @Override
     public void create(Borrowing entity, DatabaseManager dbManager) {
-        String query = "INSERT INTO Borrowing (id, resourceId, membershipId, dateBorrowed, dateReturned) VALUES (" + entity.getId() + ", " + entity.getResourceId() + ", " + entity.getMembershipId() + ", '" + sdf.format(entity.getDateBorrowed()) + "', '" + sdf.format(entity.getDateReturned()) + "')";
+        String query = "INSERT INTO Borrowing ( resourceId, membershipId, dateBorrowed, dateReturned) VALUES (" + entity.getResourceId() + ", " + entity.getMembershipId() + ", '" + sdf.format(entity.getDateBorrowed()) + "', '" + sdf.format(entity.getDateReturned()) + "')";
         dbManager.executeQuery(query);
     }
 
@@ -66,6 +82,6 @@ public class BorrowingRepository implements RepositoryInterface<Borrowing> {
         int membershipId = resultSet.getInt("membershipId");
         Date dateBorrowed = resultSet.getDate("dateBorrowed");
         Date dateReturned = resultSet.getDate("dateReturned");
-        return new Borrowing(id, resourceId, membershipId, dateBorrowed, dateReturned);
+        return new Borrowing(id, membershipId, resourceId, dateBorrowed, dateReturned);
     }
 }

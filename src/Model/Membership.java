@@ -1,4 +1,5 @@
 package Model;
+
 import java.sql.Date;
 
 public class Membership {
@@ -17,6 +18,7 @@ public class Membership {
         this.dateJoined = dateJoined;
         this.dateExpired = dateExpired;
     }
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -64,7 +66,6 @@ public class Membership {
 
     public String toString() {
         return "Membership{" +
-                "id=" + id +
                 ", personId=" + personId +
                 ", libraryId=" + libraryId +
                 ", type='" + type + '\'' +

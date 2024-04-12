@@ -1,5 +1,7 @@
 package Model;
+
 import java.sql.Date;
+
 public class Borrowing {
     private final int id;
     private int resourceId;
@@ -8,7 +10,7 @@ public class Borrowing {
     private Date dateReturned;
 
     // Constructor
-    public Borrowing(int id, int resourceId, int membershipId, Date dateBorrowed, Date dateReturned) {
+    public Borrowing(int id, int membershipId, int resourceId, Date dateBorrowed, Date dateReturned) {
         this.id = id;
         this.resourceId = resourceId;
         this.membershipId = membershipId;
@@ -55,7 +57,6 @@ public class Borrowing {
 
     public String toString() {
         return "Borrowing{" +
-                "id=" + id +
                 ", resourceId=" + resourceId +
                 ", membershipId=" + membershipId +
                 ", dateBorrowed=" + dateBorrowed +

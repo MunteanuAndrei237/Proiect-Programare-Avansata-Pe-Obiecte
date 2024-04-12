@@ -55,7 +55,6 @@ public class Librarian {
 
     public String toString() {
         return "Librarian{" +
-                "id=" + id +
                 ", libraryId=" + libraryId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +

@@ -1,10 +1,11 @@
 package DatabaseManager;
+
 import java.sql.*;
 
 public class DatabaseManager {
     private static final String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    private static final String username = "sys as sysdba";
-    private static final String password = "andrei1834";
+    private static final String username = "C##andrei";
+    private static final String password = "parola";
     private static Connection connection;
 
     // Singleton pattern
@@ -26,6 +27,7 @@ public class DatabaseManager {
         return instance;
     }
 
+    // Execute a SQL query
     public ResultSet executeQuery(String query) {
         try {
             Statement statement = connection.createStatement();

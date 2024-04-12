@@ -1,129 +1,227 @@
-CREATE TABLE Library (
-                         id INT PRIMARY KEY,
-                         address VARCHAR(255),
-                         name VARCHAR(255),
-                         program VARCHAR(255)
-);
-CREATE TABLE Person (
-                        id INT PRIMARY KEY,
-                        name VARCHAR(255),
-                        email VARCHAR(255)
-);
-CREATE TABLE Membership (
-                            id INT PRIMARY KEY,
-                            PersonId INT,
-                            LibraryId INT,
-                            type VARCHAR(255),
-                            dateJoined DATE,
-                            dateExpired DATE,
-                            FOREIGN KEY (PersonId) REFERENCES Person(id),
-                            FOREIGN KEY (LibraryId) REFERENCES Library(id)
-);
-CREATE TABLE Librarian (
-                           id INT PRIMARY KEY,
-                           LibraryId INT,
-                           name VARCHAR(255),
-                           email VARCHAR(255),
-                           program VARCHAR(255),
-                           FOREIGN KEY (LibraryId) REFERENCES Library(id)
-);
-CREATE TABLE Section (
-                         id INT PRIMARY KEY,
-                         LibraryId INT,
-                         numberShelves INT,
-                         categoryName VARCHAR(255),
-                         FOREIGN KEY (LibraryId) REFERENCES Library(id)
-);
-CREATE TABLE "Resource" (
-                          id INT PRIMARY KEY,
-                          SectionId INT,
-                          title VARCHAR(255),
-                          author VARCHAR(255),
-                          inStock INT,
-                          toReturn INT,
-                          yearPublished INT,
-                          FOREIGN KEY (SectionId) REFERENCES Section(id)
-);
-CREATE TABLE Book (
-                      ResourceId INT PRIMARY KEY,
-                      genre VARCHAR(255),
-                      publisher VARCHAR(255),
-                      nrPages INT,
-                      FOREIGN KEY (ResourceId) REFERENCES "Resource"(id)
-);
-CREATE TABLE Cd (
-                    ResourceId INT PRIMARY KEY,
-                    format VARCHAR(255),
-                    "size" INT,
-                    duration INT,
-                    FOREIGN KEY (ResourceId) REFERENCES "Resource"(id)
-);
-CREATE TABLE ResearchPaper (
-                               ResourceId INT PRIMARY KEY,
-                               field VARCHAR(255),
-                               university VARCHAR(255),
-                               sources VARCHAR(255),
-                               FOREIGN KEY (ResourceId) REFERENCES "Resource"(id)
-);
-CREATE TABLE Borrowing (
-                           id INT PRIMARY KEY,
-                           ResourceId INT,
-                           MembershipId INT,
-                           dateBorrowed DATE,
-                           dateReturned DATE,
-                           FOREIGN KEY (ResourceId) REFERENCES "Resource"(id),
-                           FOREIGN KEY (MembershipId) REFERENCES Membership(id)
-);
---Insert data into the Library table
-INSERT INTO Library (id, address, name, program) VALUES (1, '123 Main St', 'Central Library', '8:00-18:00');
-INSERT INTO Library (id, address, name, program) VALUES (2, '456 Elm St', 'North Branch', '8:00-20:00');
-INSERT INTO Library (id, address, name, program) VALUES (3, '789 Oak St', 'South Branch', '7:00-22:00');
-
--- Insert data into the Person table
-INSERT INTO Person (id, name, email) VALUES (1, 'John Smith', 'john@example.com');
-INSERT INTO Person (id, name, email) VALUES (2, 'Jane Doe', 'jane@example.com');
-INSERT INTO Person (id, name, email) VALUES (3, 'Alice Johnson', 'alice@example.com');
-
---Insert data into the Membership table
-INSERT INTO Membership (id, PersonId, LibraryId, type, dateJoined, dateExpired) VALUES (1, 1, 1, 'Regular', '01-JAN-23', '31-DEC-29');
-INSERT INTO Membership (id, PersonId, LibraryId, type, dateJoined, dateExpired) VALUES (2, 2, 2, 'Premium', '01-FEB-23', '01-FEB-29');
-INSERT INTO Membership (id, PersonId, LibraryId, type, dateJoined, dateExpired) VALUES (3, 3, 3, 'Regular', '01-MAR-23', '01-NOV-24');
-
--- Insert data into the Librarian table
-INSERT INTO Librarian (id, LibraryId, name, email, program) VALUES (1, 1, 'David Brown', 'david@example.com', '8:00-18:00');
-INSERT INTO Librarian (id, LibraryId, name, email, program) VALUES (2, 2, 'Emily White', 'emily@example.com', '10:00-20:00');
-INSERT INTO Librarian (id, LibraryId, name, email, program) VALUES (3, 3, 'Michael Johnson', 'michael@example.com', '7:00-22:00');
-
--- Insert data into the Section table
-INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (1, 1, 10, 'Fiction');
-INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (2, 1, 8, 'Non-Fiction');
-INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (3, 2, 12, 'Fiction');
-INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (4, 2, 6, 'Non-Fiction');
-INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (5, 3, 15, 'Fiction');
-INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (6, 3, 5, 'Non-Fiction');
-
--- Insert data into the Resource table
-INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (1, 1, 'Book Title 1', 'Author A', 1, 1, 2020);
-INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (2, 2, 'Book Title 2', 'Author B', 0, 0, 2019);
-INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (3, 3, 'Book Title 3', 'Author C', 1, 0, 2018);
-INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (4, 4, 'CD Title 1', 'Artist A', 1, 1, 2017);
-INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (5, 5, 'CD Title 2', 'Artist B', 0, 0, 2016);
-INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (6, 6, 'Research Paper Title 1', 'Researcher X', 0, 1, 2021);
-
--- Insert data into the Book table
-INSERT INTO Book (ResourceId, genre, publisher, nrPages) VALUES (1, 'History', 'Publisher A', 200);
-INSERT INTO Book (ResourceId, genre, publisher, nrPages) VALUES (2, 'Philosophy', 'Publisher B', 300);
-INSERT INTO Book (ResourceId, genre, publisher, nrPages) VALUES (3, 'Economy', 'Publisher C', 250);
-
--- Insert data into the Cd table
-INSERT INTO Cd (ResourceId, format, "size", duration) VALUES (4, 'MP3', 10000000, 12000);
-INSERT INTO Cd (ResourceId, format, "size", duration) VALUES (5, 'WAV', 20000000, 15000);
-
--- Insert data into the ResearchPaper table
-INSERT INTO ResearchPaper (ResourceId, field, university, sources) VALUES (6, 'Science', 'Stanford', 'Wikipedia');
-
--- Insert data into the Borrowing table
-INSERT INTO Borrowing (id, ResourceId, MembershipId, dateBorrowed, dateReturned) VALUES (1, 1, 1, '05-JAN-23', '05-MAY-24');
-INSERT INTO Borrowing (id, ResourceId, MembershipId, dateBorrowed, dateReturned) VALUES (2, 4, 2, '10-FEB-23', '09-SEP-24');
-INSERT INTO Borrowing (id, ResourceId, MembershipId, dateBorrowed, dateReturned) VALUES (3, 6, 3, '15-MAR-23','12-MAY-24');
-COMMIT
+-- -- CREATE SEQUENCE library_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE person_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE membership_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE librarian_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE section_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE resource_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE book_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE cd_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE researchpaper_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE SEQUENCE borrowing_seq START WITH 1 INCREMENT BY 1;
+-- -- CREATE TABLE Library (
+-- --                          id INT PRIMARY KEY,
+-- --                          address VARCHAR2(255),
+-- --                          name VARCHAR2(255),
+-- --                          program VARCHAR2(255)
+-- -- );
+-- --
+-- -- CREATE TABLE Person (
+-- --                         id INT PRIMARY KEY,
+-- --                         name VARCHAR2(255),
+-- --                         email VARCHAR2(255)
+-- -- );
+-- --
+-- -- CREATE TABLE Membership (
+-- --                             id INT PRIMARY KEY,
+-- --                             PersonId INT,
+-- --                             LibraryId INT,
+-- --                             type VARCHAR2(255),
+-- --                             dateJoined DATE,
+-- --                             dateExpired DATE,
+-- --                             FOREIGN KEY (PersonId) REFERENCES Person(id),
+-- --                             FOREIGN KEY (LibraryId) REFERENCES Library(id)
+-- -- );
+-- --
+-- -- CREATE TABLE Librarian (
+-- --                            id INT PRIMARY KEY,
+-- --                            LibraryId INT,
+-- --                            name VARCHAR2(255),
+-- --                            email VARCHAR2(255),
+-- --                            program VARCHAR2(255),
+-- --                            FOREIGN KEY (LibraryId) REFERENCES Library(id)
+-- -- );
+-- --
+-- -- CREATE TABLE Section (
+-- --                          id INT PRIMARY KEY,
+-- --                          LibraryId INT,
+-- --                          numberShelves INT,
+-- --                          categoryName VARCHAR2(255),
+-- --                          FOREIGN KEY (LibraryId) REFERENCES Library(id)
+-- -- );
+-- --
+-- -- CREATE TABLE "Resource" (
+-- --                             id INT PRIMARY KEY,
+-- --                             SectionId INT,
+-- --                             title VARCHAR2(255),
+-- --                             author VARCHAR2(255),
+-- --                             inStock INT,
+-- --                             toReturn INT,
+-- --                             yearPublished INT,
+-- --                             FOREIGN KEY (SectionId) REFERENCES Section(id)
+-- -- );
+-- --
+-- -- CREATE TABLE Book (
+-- --                       ResourceId INT PRIMARY KEY,
+-- --                       genre VARCHAR2(255),
+-- --                       publisher VARCHAR2(255),
+-- --                       nrPages INT,
+-- --                       FOREIGN KEY (ResourceId) REFERENCES "Resource"(id)
+-- -- );
+-- --
+-- -- CREATE TABLE Cd (
+-- --                     ResourceId INT PRIMARY KEY,
+-- --                     format VARCHAR2(255),
+-- --                     "size" INT,
+-- --                     duration INT,
+-- --                     FOREIGN KEY (ResourceId) REFERENCES "Resource"(id)
+-- -- );
+-- --
+-- -- CREATE TABLE ResearchPaper (
+-- --                                ResourceId INT PRIMARY KEY,
+-- --                                field VARCHAR2(255),
+-- --                                university VARCHAR2(255),
+-- --                                sources VARCHAR2(255),
+-- --                                FOREIGN KEY (ResourceId) REFERENCES "Resource"(id)
+-- -- );
+-- --
+-- -- CREATE TABLE Borrowing (
+-- --                            id INT PRIMARY KEY,
+-- --                            ResourceId INT,
+-- --                            MembershipId INT,
+-- --                            dateBorrowed DATE,
+-- --                            dateReturned DATE,
+-- --                            FOREIGN KEY (ResourceId) REFERENCES "Resource"(id),
+-- --                            FOREIGN KEY (MembershipId) REFERENCES Membership(id)
+-- -- );
+-- -- CREATE OR REPLACE TRIGGER library_trigger
+-- --     BEFORE INSERT ON Library
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT library_seq.NEXTVAL INTO :new.id FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER person_trigger
+-- --     BEFORE INSERT ON Person
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT person_seq.NEXTVAL INTO :new.id FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER membership_trigger
+-- --     BEFORE INSERT ON Membership
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT membership_seq.NEXTVAL INTO :new.id FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER librarian_trigger
+-- --     BEFORE INSERT ON Librarian
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT librarian_seq.NEXTVAL INTO :new.id FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER section_trigger
+-- --     BEFORE INSERT ON Section
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT section_seq.NEXTVAL INTO :new.id FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER resource_trigger
+-- --     BEFORE INSERT ON "Resource"
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT resource_seq.NEXTVAL INTO :new.id FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER book_trigger
+-- --     BEFORE INSERT ON Book
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT book_seq.NEXTVAL INTO :new.ResourceId FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER cd_trigger
+-- --     BEFORE INSERT ON Cd
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT cd_seq.NEXTVAL INTO :new.ResourceId FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER researchpaper_trigger
+-- --     BEFORE INSERT ON ResearchPaper
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT researchpaper_seq.NEXTVAL INTO :new.ResourceId FROM dual;
+-- -- END;
+-- -- /
+-- --
+-- -- CREATE OR REPLACE TRIGGER borrowing_trigger
+-- --     BEFORE INSERT ON Borrowing
+-- --     FOR EACH ROW
+-- -- BEGIN
+-- --     SELECT borrowing_seq.NEXTVAL INTO :new.id FROM dual;
+-- -- END;
+-- -- /
+-- --Insert data into the Library table
+-- INSERT INTO Library (id, address, name, program) VALUES (1, '123 Main St', 'Central Library', '08:00-18:00');
+-- INSERT INTO Library (id, address, name, program) VALUES (2, '456 Elm St', 'North Branch', '08:00-20:00');
+-- INSERT INTO Library (id, address, name, program) VALUES (3, '789 Oak St', 'South Branch', '07:00-22:00');
+--
+-- -- Insert data into the Person table
+-- INSERT INTO Person (id, name, email) VALUES (1, 'John Smith', 'john@example.com');
+-- INSERT INTO Person (id, name, email) VALUES (2, 'Jane Doe', 'jane@example.com');
+-- INSERT INTO Person (id, name, email) VALUES (3, 'Alice Johnson', 'alice@example.com');
+--
+-- --Insert data into the Membership table
+-- INSERT INTO Membership (id, PersonId, LibraryId, type, dateJoined, dateExpired) VALUES (1, 1, 1, 'Regular', '01-JAN-23', '31-DEC-29');
+-- INSERT INTO Membership (id, PersonId, LibraryId, type, dateJoined, dateExpired) VALUES (2, 2, 2, 'Premium', '01-FEB-23', '01-FEB-29');
+-- INSERT INTO Membership (id, PersonId, LibraryId, type, dateJoined, dateExpired) VALUES (3, 3, 3, 'Regular', '01-MAR-23', '01-NOV-24');
+--
+-- -- Insert data into the Librarian table
+-- INSERT INTO Librarian (id, LibraryId, name, email, program) VALUES (1, 1, 'David Brown', 'david@example.com', '08:00-18:00');
+-- INSERT INTO Librarian (id, LibraryId, name, email, program) VALUES (2, 2, 'Emily White', 'emily@example.com', '10:00-20:00');
+-- INSERT INTO Librarian (id, LibraryId, name, email, program) VALUES (3, 3, 'Michael Johnson', 'michael@example.com', '07:00-22:00');
+--
+-- -- Insert data into the Section table
+-- INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (1, 1, 10, 'Fiction');
+-- INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (2, 1, 8, 'Non-Fiction');
+-- INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (3, 2, 12, 'Fiction');
+-- INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (4, 2, 6, 'Non-Fiction');
+-- INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (5, 3, 15, 'Fiction');
+-- INSERT INTO Section (id, LibraryId, numberShelves, categoryName) VALUES (6, 3, 5, 'Non-Fiction');
+--
+-- -- Insert data into the Resource table
+-- INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (1, 1, 'Book Title 1', 'Author A', 1, 1, 2020);
+-- INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (2, 2, 'Book Title 2', 'Author B', 0, 0, 2019);
+-- INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (3, 3, 'Book Title 3', 'Author C', 1, 0, 2018);
+-- INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (4, 4, 'CD Title 1', 'Artist A', 1, 1, 2017);
+-- INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (5, 5, 'CD Title 2', 'Artist B', 0, 0, 2016);
+-- INSERT INTO "Resource" (id, SectionId, title, author, inStock, toReturn, yearPublished) VALUES (6, 6, 'Research Paper Title 1', 'Researcher X', 0, 1, 2021);
+--
+-- -- Insert data into the Book table
+-- INSERT INTO Book (ResourceId, genre, publisher, nrPages) VALUES (1, 'History', 'Publisher A', 200);
+-- INSERT INTO Book (ResourceId, genre, publisher, nrPages) VALUES (2, 'Philosophy', 'Publisher B', 300);
+-- INSERT INTO Book (ResourceId, genre, publisher, nrPages) VALUES (3, 'Economy', 'Publisher C', 250);
+--
+-- -- Insert data into the Cd table
+-- INSERT INTO Cd (ResourceId, format, "size", duration) VALUES (4, 'MP3', 10000000, 12000);
+-- INSERT INTO Cd (ResourceId, format, "size", duration) VALUES (5, 'WAV', 20000000, 15000);
+--
+-- -- Insert data into the ResearchPaper table
+-- INSERT INTO ResearchPaper (ResourceId, field, university, sources) VALUES (6, 'Science', 'Stanford', 'Wikipedia');
+--
+-- -- Insert data into the Borrowing table
+-- INSERT INTO Borrowing (id, ResourceId, MembershipId, dateBorrowed, dateReturned) VALUES (1, 1, 1, '05-JAN-23', '05-MAY-24');
+-- INSERT INTO Borrowing (id, ResourceId, MembershipId, dateBorrowed, dateReturned) VALUES (2, 4, 2, '10-FEB-23', '09-SEP-24');
+-- INSERT INTO Borrowing (id, ResourceId, MembershipId, dateBorrowed, dateReturned) VALUES (3, 6, 3, '15-MAR-23','12-MAY-24');
+-- COMMIT
