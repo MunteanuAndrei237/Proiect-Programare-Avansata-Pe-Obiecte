@@ -30,8 +30,11 @@ public class DatabaseManager {
     // Execute a SQL query
     public ResultSet executeQuery(String query) {
         try {
-            Statement statement = connection.createStatement();
-            return statement.executeQuery(query);
+            // Create a PreparedStatement from the query string
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            // Execute the prepared statement and return the ResultSet
+            return preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

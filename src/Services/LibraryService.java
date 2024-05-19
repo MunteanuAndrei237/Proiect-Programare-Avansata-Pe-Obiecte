@@ -6,8 +6,11 @@ import Model.Library;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 public class LibraryService {
 
@@ -127,19 +130,25 @@ public class LibraryService {
 
     public void sortLibraries(String filter, DatabaseManager dbManager) {
         if (filter.equals("hoursOpened")) {
-            ArrayList<Library> libraries = (ArrayList<Library>) libraryRepository.findAll(dbManager);
-            libraries.sort((library1, library2) -> {
-                // Split program into hours
-                String[] hours1 = library1.getProgram().split("-");
-                String[] hours2 = library2.getProgram().split("-");
+            // TreeSet with a custom comparator for sorting by opening hours
+            Set<Library> libraries = new TreeSet<>(new Comparator<Library>() {
+                @Override
+                public int compare(Library library1, Library library2) {
+                    // Split program into hours
+                    String[] hours1 = library1.getProgram().split("-");
+                    String[] hours2 = library2.getProgram().split("-");
 
-                // Extract opening times
-                int openingTime1 = Integer.parseInt(hours1[0].replace(":", ""));
-                int openingTime2 = Integer.parseInt(hours2[0].replace(":", ""));
+                    // Extract opening times
+                    int openingTime1 = Integer.parseInt(hours1[0].replace(":", ""));
+                    int openingTime2 = Integer.parseInt(hours2[0].replace(":", ""));
 
-                // Compare opening times
-                return Integer.compare(openingTime1, openingTime2);
+                    // Compare opening times
+                    return Integer.compare(openingTime1, openingTime2);
+                }
             });
+
+            libraries.addAll(libraryRepository.findAll(dbManager));
+
             System.out.println("Libraries sorted by hours opened: ");
             for (Library library : libraries) {
                 System.out.println(library.getName() + " " + library.getProgram());
@@ -165,6 +174,5 @@ public class LibraryService {
         } else {
             System.out.println("Invalid filter");
         }
-
     }
 }
